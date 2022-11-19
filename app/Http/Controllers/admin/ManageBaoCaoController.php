@@ -37,15 +37,11 @@ class ManageBaoCaoController extends Controller
                 //     ->where('status', 4)
                 //     ->first();
                 $total_px[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" BETWEEN SYMMETRIC ' . $from . ' and ' . $to . ' and status = 4 limit 1'
+                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ' . $from . ' created_at and < ' . $to . ' and status = 4 limit 1'
                 );
 
-                // $total_pn[$stringMY] =  PhieuNhap::selectRaw('sum(phieu_nhaps.tongTien) as tongTien')
-                //     ->whereBetween('created_at', [$from, $to])
-                //     ->where('status', 1)
-                //     ->first();
                 $total_pn[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" BETWEEN SYMMETRIC ' . $from . ' and ' . $to . ' and status = 1 limit 1'
+                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ' . $from . ' created_at and < ' . $to . ' and status = 1 limit 1'
                 );
             } else {
                 $timeNow = $timeNow->subMonth();
@@ -67,11 +63,11 @@ class ManageBaoCaoController extends Controller
                 //     ->first();
 
                 $total_px[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" BETWEEN SYMMETRIC ' . $from . ' and ' . $to . ' and status = 4 limit 1'
+                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ' . $from . ' created_at and < ' . $to . ' and status = 4 limit 1'
                 );
 
                 $total_pn[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" BETWEEN SYMMETRIC ' . $from . ' and ' . $to . ' and status = 1 limit 1'
+                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ' . $from . ' created_at and < ' . $to . ' and status = 1 limit 1'
                 );
             }
         }
