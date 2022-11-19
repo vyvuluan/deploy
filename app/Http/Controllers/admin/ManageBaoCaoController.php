@@ -12,6 +12,7 @@ use App\Models\Loaisp;
 use App\Models\Product;
 use App\Models\PhieuNhap;
 use App\Models\Contact;
+use Illuminate\Support\Facades\DB;
 
 class ManageBaoCaoController extends Controller
 {
@@ -31,15 +32,21 @@ class ManageBaoCaoController extends Controller
                 $dayInMonth = Carbon::parse($from)->daysInMonth;
                 $to = date($monthYear[0] . '-' . $monthYear[1] . '-' . $dayInMonth);
 
-                $total_px[$stringMY] =  PhieuXuat::selectRaw('sum(tongTien) as tongTien')
-                    ->whereBetween('created_at', [$from, $to])
-                    ->where('status', 4)
-                    ->first();
+                // $total_px[$stringMY] =  PhieuXuat::selectRaw('sum(phieu_xuats.tongTien) as tongTien')
+                //     ->whereBetween('created_at', [$from, $to])
+                //     ->where('status', 4)
+                //     ->first();
+                $total_px[$stringMY] = DB::select(
+                    'select sum("tongTien") as tongTien from phieu_xuats where created_at BETWEEN ' . $from . ' and ' . $to . ' and status = 4 limit 1'
+                );
 
-                $total_pn[$stringMY] =  PhieuNhap::selectRaw('sum(tongTien) as tongTien')
-                    ->whereBetween('created_at', [$from, $to])
-                    ->where('status', 1)
-                    ->first();
+                // $total_pn[$stringMY] =  PhieuNhap::selectRaw('sum(phieu_nhaps.tongTien) as tongTien')
+                //     ->whereBetween('created_at', [$from, $to])
+                //     ->where('status', 1)
+                //     ->first();
+                $total_pn[$stringMY] = DB::select(
+                    'select sum("tongTien") as tongTien from phieu_nhaps where created_at BETWEEN ' . $from . ' and ' . $to . ' and status = 1 limit 1'
+                );
             } else {
                 $timeNow = $timeNow->subMonth();
                 $arrayTime[$i] = $timeNow->toDateString();
@@ -50,19 +57,27 @@ class ManageBaoCaoController extends Controller
                 $dayInMonth = Carbon::parse($from)->daysInMonth;
                 $to = date($monthYear[0] . '-' . $monthYear[1] . '-' . $dayInMonth);
 
-                $total_px[$stringMY] =  PhieuXuat::selectRaw('sum(tongTien) as tongTien')
-                    ->whereBetween('created_at', [$from, $to])
-                    ->where('status', 4)
-                    ->first();
-                $total_pn[$stringMY] =  PhieuNhap::selectRaw('sum(tongTien) as tongTien')
-                    ->whereBetween('created_at', [$from, $to])
-                    ->where('status', 1)
-                    ->first();
+                // $total_px[$stringMY] =  PhieuXuat::selectRaw('sum(phieu_xuats.tongTien) as tongTien')
+                //     ->whereBetween('created_at', [$from, $to])
+                //     ->where('status', 4)
+                //     ->first();
+                // $total_pn[$stringMY] =  PhieuNhap::selectRaw('sum(phieu_nhaps.tongTien) as tongTien')
+                //     ->whereBetween('created_at', [$from, $to])
+                //     ->where('status', 1)
+                //     ->first();
+
+                $total_px[$stringMY] = DB::select(
+                    'select sum("tongTien") as tongTien from phieu_xuats where created_at BETWEEN ' . $from . ' and ' . $to . ' and status = 4 limit 1'
+                );
+
+                $total_pn[$stringMY] = DB::select(
+                    'select sum("tongTien") as tongTien from phieu_nhaps where created_at BETWEEN ' . $from . ' and ' . $to . ' and status = 1 limit 1'
+                );
             }
         }
 
 
-        $ctpxs = CtPhieuXuat::selectRaw('sum(soluong) as soluong,  maLoai')
+        $ctpxs = CtPhieuXuat::selectRaw('sum(phieu_xuats.soluong) as soluong,  maLoai')
             ->join('products', 'ct_phieu_xuats.product_id', '=', 'products.id')
             ->join('phieu_xuats', 'ct_phieu_xuats.px_id', '=', 'phieu_xuats.id')
             ->where('phieu_xuats.status', 4)
@@ -78,10 +93,10 @@ class ManageBaoCaoController extends Controller
             $phanTramLoai[Loaisp::find($ctpx->maLoai)->tenLoai] = ($ctpx->soluong * 100) / $tongPhanTram;
         }
 
-        $doanhthu = PhieuXuat::selectRaw('sum(tongTien) as tongTien')->where('status', 4)
+        $doanhthu = PhieuXuat::selectRaw('sum(phieu_xuats.tongTien) as tongTien')->where('status', 4)
             ->first();
 
-        $chitieu = PhieuNhap::selectRaw('sum(tongTien) as tongTien')->where('status', 1)
+        $chitieu = PhieuNhap::selectRaw('sum(phieu_nhaps.tongTien) as tongTien')->where('status', 1)
             ->first();
 
 
