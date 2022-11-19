@@ -37,11 +37,13 @@ class ManageBaoCaoController extends Controller
                 //     ->where('status', 4)
                 //     ->first();
                 $total_px[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ' . $from . ' and "created_at"  < ' . $to . ' and status = 4 limit 1'
+                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ? and "created_at"  < ? and status = 4 limit 1',
+                    [$from, $to]
                 );
 
                 $total_pn[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ' . $from . ' and "created_at"  < ' . $to . ' and status = 1 limit 1'
+                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ? and "created_at" and < ? and status = 1 limit 1',
+                    [$from, $to]
                 );
             } else {
                 $timeNow = $timeNow->subMonth();
@@ -63,11 +65,13 @@ class ManageBaoCaoController extends Controller
                 //     ->first();
 
                 $total_px[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ' . $from . ' and "created_at"  < ' . $to . ' and status = 4 limit 1'
+                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ? and "created_at"  < ? and status = 4 limit 1',
+                    [$from, $to]
                 );
 
                 $total_pn[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ' . $from . ' and "created_at" and < ' . $to . ' and status = 1 limit 1'
+                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ? and "created_at" and < ? and status = 1 limit 1',
+                    [$from, $to]
                 );
             }
         }
