@@ -32,19 +32,24 @@ class ManageBaoCaoController extends Controller
                 $dayInMonth = Carbon::parse($from)->daysInMonth;
                 $to = date($monthYear[0] . '-' . $monthYear[1] . '-' . $dayInMonth);
 
-                // $total_px[$stringMY] =  PhieuXuat::selectRaw('sum(phieu_xuats.tongTien) as tongTien')
-                //     ->whereBetween('created_at', [$from, $to])
-                //     ->where('status', 4)
-                //     ->first();
-                $total_px[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ? and "created_at"  < ?  limit 1',
-                    [$from, $to]
-                );
+                $total_px[$stringMY] =  PhieuXuat::selectRaw('sum(phieu_xuats.tongTien) as tongTien')
+                    ->whereBetween('created_at', [$from, $to])
+                    ->where('status', 4)
+                    ->first();
+                $total_pn[$stringMY] =  PhieuNhap::selectRaw('sum(phieu_nhaps.tongTien) as tongTien')
+                    ->whereBetween('created_at', [$from, $to])
+                    ->where('status', 1)
+                    ->first();
 
-                $total_pn[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ? and "created_at" and < ? limit 1',
-                    [$from, $to]
-                );
+                // $total_px[$stringMY] = DB::select(
+                //     'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ? and "created_at"  < ?  limit 1',
+                //     [$from, $to]
+                // );
+
+                // $total_pn[$stringMY] = DB::select(
+                //     'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ? and "created_at" and < ? limit 1',
+                //     [$from, $to]
+                // );
             } else {
                 $timeNow = $timeNow->subMonth();
                 $arrayTime[$i] = $timeNow->toDateString();
@@ -55,24 +60,24 @@ class ManageBaoCaoController extends Controller
                 $dayInMonth = Carbon::parse($from)->daysInMonth;
                 $to = date($monthYear[0] . '-' . $monthYear[1] . '-' . $dayInMonth);
 
-                // $total_px[$stringMY] =  PhieuXuat::selectRaw('sum(phieu_xuats.tongTien) as tongTien')
-                //     ->whereBetween('created_at', [$from, $to])
-                //     ->where('status', 4)
-                //     ->first();
-                // $total_pn[$stringMY] =  PhieuNhap::selectRaw('sum(phieu_nhaps.tongTien) as tongTien')
-                //     ->whereBetween('created_at', [$from, $to])
-                //     ->where('status', 1)
-                //     ->first();
+                $total_px[$stringMY] =  PhieuXuat::selectRaw('sum(phieu_xuats.tongTien) as tongTien')
+                    ->whereBetween('created_at', [$from, $to])
+                    ->where('status', 4)
+                    ->first();
+                $total_pn[$stringMY] =  PhieuNhap::selectRaw('sum(phieu_nhaps.tongTien) as tongTien')
+                    ->whereBetween('created_at', [$from, $to])
+                    ->where('status', 1)
+                    ->first();
 
-                $total_px[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ? and "created_at"  < ?  limit 1',
-                    [$from, $to]
-                );
+                // $total_px[$stringMY] = DB::select(
+                //     'select sum("tongTien") as tongTien from phieu_xuats where "created_at" >= ? and "created_at"  < ?  limit 1',
+                //     [$from, $to]
+                // );
 
-                $total_pn[$stringMY] = DB::select(
-                    'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ? and "created_at" and < ? limit 1',
-                    [$from, $to]
-                );
+                // $total_pn[$stringMY] = DB::select(
+                //     'select sum("tongTien") as tongTien from phieu_nhaps where "created_at" >= ? and "created_at" and < ? limit 1',
+                //     [$from, $to]
+                // );
             }
         }
 
